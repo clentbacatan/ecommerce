@@ -12,6 +12,11 @@ import AppNavBar from './components/AppNavBar';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Home from './pages/Home';
+import Product from './pages/Product';
+import ProductView from './components/ProductView';
+import Logout from './pages/Logout';
+import Error from './pages/Error';
+
 
 
 import { UserProvider } from './UserContext';
@@ -56,6 +61,10 @@ function App() {
             <Route path="/" element={<Home />}/>
             <Route path="/register" element={<Register />}/>
             <Route path="/login" element={<Login />}/>
+            <Route path="/logout" element={<Logout />}/>
+            <Route path="/product" element={<Product />}/>
+            <Route path="/products/:productId" element={<ProductView />}/>
+            <Route path="*" element={<Error />}/>
           </Routes>
         </Container>
       </Router>

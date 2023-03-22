@@ -2,7 +2,7 @@ import { Form, Button } from 'react-bootstrap';
 
 import UserContext from '../UserContext';
 
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 import { useState, useEffect, useContext } from 'react';
 
@@ -12,6 +12,7 @@ export default function Register() {
 
 
 	const { user } = useContext(UserContext);
+	const navigate = useNavigate();
 	const [email, setEmail] = useState('');
 	const [password1, setPassword1] = useState('');
 	const [password2, setPassword2] = useState('');
@@ -70,15 +71,24 @@ export default function Register() {
 				}).then((res) => res.json())
 				  .then((data) => {
 
-				  	if(data) {
+				  	if(data === true) {
 				  
+				  		setEmail('');
+						setPassword1('');
+						setPassword2('');
+						setFirstName("");
+						setLastName("");
+						setMobileNumber("");
+
+
 				   Swal.fire({
-						title: "Login Successful",
+						title: "Successfully Registered",
 						icon: "success",
-						text: "Welcome to Zuitt!"
+						text: "Please login!"
 			
 					});
-				  	setRegisterSuccess(true)
+				  	
+				  	navigate("/login")
 				  
 				  } else {
 
@@ -91,14 +101,6 @@ export default function Register() {
 			}).catch((error) => console.log(error))
 		} 
 	 })
-			
-			setEmail('');
-			setPassword1('');
-			setPassword2('');
-			setFirstName("");
-			setLastName("");
-			setMobileNumber("");
-
 		}
 
 
