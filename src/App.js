@@ -9,13 +9,15 @@ import { Container } from 'react-bootstrap';
 
 import './App.css';
 import AppNavBar from './components/AppNavBar';
+import Admin from './components/Admin';
 import Register from './pages/Register';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import Product from './pages/Product';
 import ProductView from './components/ProductView';
 import Logout from './pages/Logout';
-import Error from './pages/Error';
+
+
 
 
 
@@ -62,9 +64,9 @@ function App() {
             <Route path="/register" element={<Register />}/>
             <Route path="/login" element={<Login />}/>
             <Route path="/logout" element={<Logout />}/>
-            <Route path="/product" element={<Product />}/>
+            <Route path="/products" element={<Product />}/>
             <Route path="/products/:productId" element={<ProductView />}/>
-            <Route path="*" element={<Error />}/>
+            <Route path="/products/:productId" element={<Admin />}/>
           </Routes>
         </Container>
       </Router>

@@ -8,8 +8,9 @@ export default function Home() {
 	const data = {
 		title: "CV-Ecommerce",
 		content: "Opportunities for everyone, everywhere",
-		destination: "/product",
+		destination: "/products",
 		label: "Enroll now!" 
+		
 	}
 
 

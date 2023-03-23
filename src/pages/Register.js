@@ -26,7 +26,6 @@ export default function Register() {
 	const [ registerSuccess, setRegisterSuccess ] = useState(false);
 
 		function registerUser(e) {
-			// Prevents page redirection via form submission
 			e.preventDefault();
 
 
