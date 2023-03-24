@@ -72,12 +72,12 @@ export default function Register() {
 
 				  	if(data === true) {
 				  
-				  		setEmail('');
+				  	setEmail('');
 						setPassword1('');
 						setPassword2('');
-						setFirstName("");
-						setLastName("");
-						setMobileNumber("");
+						setFirstName('');
+						setLastName('');
+						setMobileNumber('');
 
 
 				   Swal.fire({
@@ -86,7 +86,7 @@ export default function Register() {
 						text: "Please login!"
 			
 					});
-				  	
+				   
 				  	navigate("/login")
 				  
 				  } else {
@@ -99,13 +99,19 @@ export default function Register() {
 				}
 			}).catch((error) => console.log(error))
 		} 
+	 
 	 })
-		}
+}
 
 
 		useEffect(() => {
 			
-			if((firstName !== '' && lastName !== '' && email !== '' && password1 !== '' && password2 !== '' && mobileNumber.length >= 11) && (password1 === password2)) {
+			if((firstName !== '' && 
+				lastName !== '' && 
+				email !== '' && 
+				password1 !== '' && 
+				password2 !== '' && 
+				mobileNumber !== '') && (password1 === password2)) {
 
 				setIsActive(true);
 			
@@ -170,11 +176,12 @@ export default function Register() {
 		        onChange={e => setPassword1(e.target.value)}
 		        required />
 		      </Form.Group>
+		      
 		      <Form.Group className="mb-3" controlId="password2">
 		        <Form.Label>Verify Password</Form.Label>
 		        <Form.Control 
 		        type="password" 
-		        placeholder="Verfiy Password"
+		        placeholder="Verify Password"
 		        value={ password2 }
 		        onChange={e => setPassword2(e.target.value)}
 		        required />

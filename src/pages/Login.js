@@ -13,6 +13,8 @@ export default function Login() {
 	const [password, setPassword] = useState('')
 	const [isActive, setIsActive] = useState(false)
 
+	const [registerSuccess, setRegisterSuccess] = useState(false)
+
 
 
 	function logInUser(e) {
@@ -59,6 +61,7 @@ export default function Login() {
 			setPassword('');
 		
 		}
+		
 		const retrieveUserDetails = (token) => {
 				
 				fetch('http://localhost:4000/users/details', {
@@ -93,11 +96,13 @@ export default function Login() {
 		}, [ email, password ]);
 
 	
-		return (
-
-			(user.id !== null) ?
-				<Navigate to="/"/>
+		return registerSuccess !== false ? (
+			
+			<Navigate to="/products"/>
+		)
 			:
+		(
+
 			 <Form onSubmit={ logInUser }>
 			      <Form.Group className="mb-3" controlId="userEmail">
 			        <h3>Login</h3>

@@ -1,25 +1,23 @@
-
+//Built in react
 import { useState, useEffect } from 'react';
 
 import { BrowserRouter as Router} from 'react-router-dom';
 import { Route, Routes } from 'react-router-dom';
+
+//Downloaded package modules imports
 import { Container } from 'react-bootstrap';
 
 
-
+//Components imports
 import './App.css';
 import AppNavBar from './components/AppNavBar';
+import Home from './pages/Home';
 import Admin from './components/Admin';
 import Register from './pages/Register';
 import Login from './pages/Login';
-import Home from './pages/Home';
 import Product from './pages/Product';
 import ProductView from './components/ProductView';
 import Logout from './pages/Logout';
-
-
-
-
 
 import { UserProvider } from './UserContext';
 
@@ -66,7 +64,7 @@ function App() {
             <Route path="/logout" element={<Logout />}/>
             <Route path="/products" element={<Product />}/>
             <Route path="/products/:productId" element={<ProductView />}/>
-            <Route path="/products/:productId" element={<Admin />}/>
+            {/*<Route path="/products/:productId" element={<Admin />}/>*/}
           </Routes>
         </Container>
       </Router>

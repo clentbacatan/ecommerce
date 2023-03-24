@@ -15,7 +15,7 @@ export default function Product(){
 
 	useEffect(() =>{
 
-		fetch(`http://localhost:4000/products`)
+		fetch('http://localhost:4000/products')
 		.then(res => res.json())
 		.then(data => {
 
@@ -28,14 +28,11 @@ export default function Product(){
 	
 	  })
 	
-}, []); navigate("/products")
+}, []);
 	
 
 	
 	return (
-		(product.id !== null) ?
-			<Navigate to="/productCard"/>
-		:
 	
 	<CardGroup>
 	      <Card>
