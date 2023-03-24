@@ -11,9 +11,8 @@ export default function Home() {
 		content: "Opportunities for everyone, everywhere",
 		destination: "/products",
 		label: "See products!" 
-		
-	}
 
+	}
 
 	return (
 		<>
