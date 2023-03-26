@@ -1,71 +1,82 @@
-//Built in react
+
 import { useState, useEffect } from 'react';
 
-import { BrowserRouter as Router} from 'react-router-dom';
+
+import { Container } from 'react-bootstrap';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { Route, Routes } from 'react-router-dom';
 
-//Downloaded package modules imports
-import { Container } from 'react-bootstrap';
-
-
-//Components imports
 import './App.css';
-import AppNavBar from './components/AppNavBar';
-import Home from './pages/Home';
-import Admin from './components/Admin';
-import Register from './pages/Register';
-import Login from './pages/Login';
-import Product from './pages/Product';
+
+import AppNavbar from './components/AppNavbar';
+import Products from './pages/Products';
 import ProductView from './components/ProductView';
+import Error from './pages/Error';
+import Home from './pages/Home';
+import Login from './pages/Login';
 import Logout from './pages/Logout';
+import Register from './pages/Register';
+import AdminDashboard from './components/AdminDashboard';
+import AddProduct from './components/AddProduct';
+import AdminProduct from './pages/AdminProduct'
+import Update from './components/Update'
 
-import { UserProvider } from './UserContext';
 
+import { UserProvider } from './UserContext'
 
 function App() {
 
+ 
   const [ user, setUser ] = useState({
       id: null,
-      isAdmin: null 
+      isAdmin: null
   });
 
+  
   const unsetUser = () => {
-
-    localStorage.clear()
+    localStorage.clear();
   }
 
+  
   useEffect(() => {
     fetch(`http://localhost:4000/users/details`,{
-          method: 'GET',
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          }
-        })
-        .then(res => res.json())
-        .then(data => {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    })
+    .then(res => res.json())
+    .then(data => {
 
-          setUser({
-            id: data._id,
-            isAdmin: data.isAdmin
-          })
-        });
-      }, [])
+      console.log(data)
+
+      setUser({
+        id: data._id,
+        isAdmin: data.isAdmin
+      })
+    });
+  }, [])
 
   return (
-    
+
+   
     <UserProvider value={{ user, setUser, unsetUser }}>
-      <Router >
-        <Container fluid>
-         <AppNavBar />
-          <Routes>
-            <Route path="/" element={<Home />}/>
-            <Route path="/register" element={<Register />}/>
-            <Route path="/login" element={<Login />}/>
-            <Route path="/logout" element={<Logout />}/>
-            <Route path="/products" element={<Product />}/>
-            <Route path="/products/:productId" element={<ProductView />}/>
-            {/*<Route path="/products/:productId" element={<Admin />}/>*/}
-          </Routes>
+      <Router>      
+        <Container fluid>   
+          <AppNavbar />     
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/products" element={<Products />} />
+              <Route path="/products/:productId" element={<ProductView />} />
+              <Route path="/admindashboard" element={<AdminDashboard />}/>        
+              <Route path="/login" element={<Login />} />
+              <Route path="/logout" element={<Logout />}/>
+              <Route path="/addproduct" element={<AddProduct />}/>
+              <Route path="/products/all" element={<AdminProduct/>}/>
+              <Route path="/product/:productId" element={<Update/>}/>
+              <Route path="/register" element={<Register />} />
+              <Route path="*" element={<Error />} />
+            </Routes>
         </Container>
       </Router>
     </UserProvider>

@@ -1,203 +1,201 @@
+import { useState, useEffect, useContext } from 'react';
 import { Form, Button } from 'react-bootstrap';
-
+import { Navigate,  useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import UserContext from '../UserContext';
 
-import { Navigate, useNavigate } from 'react-router-dom';
-
-import { useState, useEffect, useContext } from 'react';
-
-import Swal from 'sweetalert2';
-
-export default function Register() {
-
+export default function Register(){
 
 	const { user } = useContext(UserContext);
 	const navigate = useNavigate();
+
+	
+	const [firstName, setFirstName] = useState('');
+	const [lastName, setLastName] = useState('');
 	const [email, setEmail] = useState('');
+	const [mobileNo, setMobileNo] = useState('');
 	const [password1, setPassword1] = useState('');
 	const [password2, setPassword2] = useState('');
-	const [mobileNumber, setMobileNumber] = useState('');
-	const [firstName, setFirstName] = useState ('');
-	const [lastName, setLastName] = useState ('');
-
 
 	const [isActive, setIsActive] = useState(false);
 
-	const [ registerSuccess, setRegisterSuccess ] = useState(false);
-
-		function registerUser(e) {
-			e.preventDefault();
-
-
-			fetch('http://localhost:4000/users/checkEmail',
-			{
-				method: "POST",
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					email: email
-				}),
-
-			})
-			.then((res) => res.json())
-			.then((data) => {
-
-				if(data === true) {
-					Swal.fire({
-						title: "Authentication Failed",
-						icon: "error",
-						text: "Email already exists"
-					});
-					
-				} else {
-
-					fetch('http://localhost:4000/users/register', {
-
-						method: "POST",
-						headers: {
-							"Content-Type": "application/json",
-
-						},
-						body: JSON.stringify({
-							firstName: firstName,
-							lastName: lastName,
-							email: email,
-							mobileNumber: mobileNumber,
-							password: password1
-						})
-
-				}).then((res) => res.json())
-				  .then((data) => {
-
-				  	if(data === true) {
-				  
-				  	setEmail('');
-						setPassword1('');
-						setPassword2('');
-						setFirstName('');
-						setLastName('');
-						setMobileNumber('');
+	console.log(email);
+	console.log(password1);
+	console.log(password2);
 
 
-				   Swal.fire({
-						title: "Successfully Registered",
-						icon: "success",
-						text: "Please login!"
-			
-					});
-				   
-				  	navigate("/login")
-				  
-				  } else {
+	function registerUser(e) {
+		
+		e.preventDefault();
 
-					Swal.fire({
-						title: "Registration failed",
-						icon: "error",
-						text: "please make sure you have registered."
-					});
-				}
-			}).catch((error) => console.log(error))
-		} 
-	 
-	 })
-}
+		fetch(`http://localhost:4000/users/checkEmail`, {
+		    method: "POST",
+		    headers: {
+		        'Content-Type': 'application/json'
+		    },
+		    body: JSON.stringify({
+		        email: email
+		    })
+		})
+		.then(res => res.json())
+		.then(data => {
 
+		    console.log(data);
 
-		useEffect(() => {
-			
-			if((firstName !== '' && 
-				lastName !== '' && 
-				email !== '' && 
-				password1 !== '' && 
-				password2 !== '' && 
-				mobileNumber !== '') && (password1 === password2)) {
+		    if(data === true){
 
-				setIsActive(true);
-			
-			} else {
+		    	Swal.fire({
+		    		title: 'Duplicate email found',
+		    		icon: 'error',
+		    		text: 'Kindly provide another email to complete the registration.'	
+		    	});
 
-				setIsActive(false);
-			}
+		    } else {
 
-		}, [email, password1, password2, firstName, lastName, mobileNumber]);
+	            fetch(`http://localhost:4000/users/register`, {
+	                method: "POST",
+	                headers: {
+	                    'Content-Type': 'application/json'
+	                },
+	                body: JSON.stringify({
+	                    firstName: firstName,
+	                    lastName: lastName,
+	                    email: email,
+	                    mobileNo: mobileNo,
+	                    password: password1
+	                })
+	            })
+	            .then(res => res.json())
+	            .then(data => {
 
+	                console.log(data);
+
+	                if (data === true) {
+
+	                    // Clear input fields
+	                    setFirstName('');
+	                    setLastName('');
+	                    setEmail('');
+	                    setMobileNo('');
+	                    setPassword1('');
+	                    setPassword2('');
+
+	                    Swal.fire({
+	                        title: 'Registration successful',
+	                        icon: 'success',
+	                        text: 'Welcome to Shopinas!'
+	                    });
+
+	                  
+	                    navigate("/login");
+
+	                } else {
+
+	                    Swal.fire({
+	                        title: 'Something wrong',
+	                        icon: 'error',
+	                        text: 'Please try again.'   
+	                    });
+	                }
+
+				});
+	        }
+	    })
+	}
 	
-	return registerSuccess !== false ? (
-			
-			<Navigate to="/login"/>
-		)
-			:
-		(
 
+	useEffect(() => {
+
+	    if((firstName !== '' && lastName !== '' && email !== '' && mobileNo.length === 11 && password1 !== '' && password2 !== '') && (password1 === password2)){
+	        setIsActive(true);
+	    } else {
+	        setIsActive(false);
+	    }
+
+	}, [firstName, lastName, email, mobileNo, password1, password2]);
+
+	return(
+
+		(user.id !== null) ?
+		    <Navigate to="/courses" />
+		:
 		<Form onSubmit={(e) => registerUser(e)}>
-            <Form.Group className="mb-3" controlId="userFirstName">
-  	  	        <Form.Label>First Name</Form.Label>
-  	  	        <Form.Control
-  	  	         type="firstName" 
-  	  	         placeholder="Enter first name"
-  	  	         value={ firstName }
-  	  	         onChange={e => setFirstName(e.target.value)}
-  	  	         required />
-            </Form.Group>
-                <Form.Group className="mb-3" controlId="userLastName">
-            	  <Form.Label>Last Name</Form.Label>
-            	   <Form.Control
-            	  type="lastName" 
-            	  placeholder="Enter last name"
-            	  value={ lastName }
-            	  onChange={e => setLastName(e.target.value)}
-            	  required />
-                  </Form.Group>
-		      <Form.Group className="mb-3" controlId="userEmail">
-		        <Form.Label>Email address</Form.Label>
-		        <Form.Control 
-		        type="email" 
-		        placeholder="Enter email"
-		        value={ email }
-		        onChange={e => setEmail(e.target.value)}
-		        required />
-		      </Form.Group>
-		        <Form.Group className="mb-3" controlId="mobileNumber">
-		      	   <Form.Label>Mobile Number</Form.Label>
-		      	    <Form.Control
-		      	 type="string" 
-		      	 placeholder="Mobile Number"
-		      	 value={ mobileNumber }
-		      	 onChange={e => setMobileNumber(e.target.value)}
-		      	 required />
-		            </Form.Group>
-		      <Form.Group className="mb-3" controlId="password1">
-		        <Form.Label>Password</Form.Label>
-		        <Form.Control 
-		        type="password"
-		        placeholder="Password"
-		        value={ password1 }
-		        onChange={e => setPassword1(e.target.value)}
-		        required />
-		      </Form.Group>
-		      
-		      <Form.Group className="mb-3" controlId="password2">
-		        <Form.Label>Verify Password</Form.Label>
-		        <Form.Control 
-		        type="password" 
-		        placeholder="Verify Password"
-		        value={ password2 }
-		        onChange={e => setPassword2(e.target.value)}
-		        required />
-		      </Form.Group>
+			<Form.Group controlId="firstName">
+			    <Form.Label>First Name</Form.Label>
+			    <Form.Control 
+			        type="text" 
+			        placeholder="Enter first name"
+			        value={firstName} 
+			        onChange={e => setFirstName(e.target.value)}
+			        required
+			    />
+			</Form.Group>
 
-		         { isActive ? 
+			<Form.Group controlId="lastName">
+			    <Form.Label>Last Name</Form.Label>
+			    <Form.Control 
+			        type="text" 
+			        placeholder="Enter last name"
+			        value={lastName} 
+			        onChange={e => setLastName(e.target.value)}
+			        required
+			    />
+			</Form.Group>
 
-		      	   <Button variant="primary" type="submit" id="submitBtn">
-		      		  Submit
-		      	   </Button>
-		      	   :
-		      	   <Button variant="danger" type="submit" id="submitBtn" disabled>
-		      	     Submit
-		      	   </Button>
-		         }   
-		</Form>
+	      <Form.Group className="mb-3" controlId="userEmail">
+	        <Form.Label>Email address</Form.Label>
+	        <Form.Control 
+	        	type="email" 
+	        	placeholder="Enter email"
+	        	value={ email }
+	        	onChange={e => setEmail(e.target.value)}
+	        	required/>
+	        <Form.Text className="text-muted">
+	          We'll never share your email with anyone else.
+	        </Form.Text>
+	      </Form.Group>
+
+	      <Form.Group controlId="mobileNo">
+	          <Form.Label>Mobile Number</Form.Label>
+	          <Form.Control 
+	              type="text" 
+	              placeholder="Enter Mobile Number"
+	              value={mobileNo} 
+	              onChange={e => setMobileNo(e.target.value)}
+	              required
+	          />
+	      </Form.Group>
+
+	      <Form.Group className="mb-3" controlId="password1">
+	        <Form.Label>Password</Form.Label>
+	        <Form.Control 
+	        	type="password" 
+	        	placeholder="Password"
+	        	value={ password1 }
+	        	onChange={e => setPassword1(e.target.value)} 
+	        	required/>
+	      </Form.Group>
+	      
+	      <Form.Group className="mb-3" controlId="password2">
+	        <Form.Label>Verify Password</Form.Label>
+	        <Form.Control 
+	        	type="password" 
+	        	placeholder="Verify Password"
+	        	value={ password2 }
+	        	onChange={e => setPassword2(e.target.value)}  
+	        	required/>
+	      </Form.Group>
+
+	      { isActive ?
+	  			<Button variant="primary" type="submit" id="submitBtn">
+	  			  Submit
+	  			</Button>
+	  			:
+	  			<Button variant="danger" type="submit" id="submitBtn" disabled>
+	  			  Submit
+	  			</Button>
+	  		}
+	    </Form>
 
 	)
 }

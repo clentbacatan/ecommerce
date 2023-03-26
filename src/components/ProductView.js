@@ -1,99 +1,127 @@
-import { useState, useEffect, useContext } from 'react';
-import { Container, Card, Row, Col, Button } from 'react-bootstrap';
-import { useParams, useNavigate, Link } from 'react-router-dom';
-import UserContext from '../UserContext';
-
-import Swal from 'sweetalert2';
+import { useState, useEffect, useContext } from "react";
+import { useParams, Link } from "react-router-dom";
+import Swal from "sweetalert2";
+import UserContext from "../UserContext";
 
 export default function ProductView() {
+  const { productId } = useParams();
+  const { user } = useContext(UserContext);
 
-	const { productId } = useParams();
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [price, setPrice] = useState(0);
+  const [quantity, setQuantity] = useState(1);
 
-	const { user } = useContext(UserContext);
+  const product = (productId) => {
+    const userId = user.id;
+    const productName = name;
 
-	const [ name, setName ] = useState("");
-	const [ description, setDescription ] = useState("");
-	const [ price, setPrice ] = useState(0);
+    fetch(`http://localhost:4000/users/checkout`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify({
+        productId: productId,
+        userId: userId,
+        productName: productName,
+        quantity: quantity
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
 
-	const navigate = useNavigate();
+        if (data) {
+          Swal.fire({
+            title: "Successfully",
+            icon: "success",
+            text: "You have successfully purchase.",
+          });
+        } else {
+          Swal.fire({
+            title: "Something went wrong",
+            icon: "error",
+            text: "Please try again.",
+          });
+        }
+      });
+  };
 
-	const checkout = (productId) => {
-		fetch(`http://localhost:4000/users/checkout`, 
-		{
-			method: 'POST',
-			headers: {
-				"Content-Type": "application/json",
-				"Authorization": `Bearer ${localStorage.getItem('token')}`
-			},
-			body: JSON.stringify({
-				productId: productId
-			})
-		})
-		.then(res => res.json())
-		.then(data => {
+  useEffect(() => {
+    console.log(productId);
 
-			console.log(data);
+    fetch(`http://localhost:4000/products/${productId}`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
 
-		if (data === true) {
+        setName(data.name);
+        setDescription(data.description);
+        setPrice(data.price);
+      });
+  }, [productId]);
 
-			Swal.fire ({
-				title: "Successfully enrolled",
-				icon: 'success',
-				text: "You have successfully enrolled for this course."
-			});
+  const handleIncrement = () => {
+    setQuantity(quantity + 1);
+  };
 
-				navigate("/product");
+  const handleDecrement = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
+  };
 
-
-			} else {
-
-				Swal.fire({
-					title: "Something went wrong",
-					icon: "error",
-					text: "Please try again."
-				});
-			}
-		});
-	}
-
-	useEffect(() => {
-
-		fetch(`http://localhost:4000/products/${productId}`)
-		.then(res => res.json())
-		.then(data => {
-
-			setName(data.name);
-			setDescription(data.description);
-			setPrice(data.price);
-		})
-	
-	}, [ productId ]);
-
-	return (
-
-		<Container className="mt-5">
-			<Row>
-				<Col lg={{ span: 5, offset:3}}>
-				  <Card className="my-3">
-					<Card.Body>
-					    <Card.Title>{ name }</Card.Title>
-					    <Card.Subtitle>Description:</Card.Subtitle>
-					    <Card.Text>{ description }</Card.Text>
-					    <Card.Subtitle>Price:</Card.Subtitle>
-					    <Card.Text>Php { price }</Card.Text>
-					    <Card.Subtitle>Class Schedule</Card.Subtitle>
-					    <Card.Text>8 am - 5pm</Card.Text>
-					     { user.id !== null ? 
-					    	<Button variant="primary" onClick={() => checkout(productId)}>Enroll</Button>
-					    	:
-					    
-					    	<Link className="btn btn-danger btn-block" to="/login">Log in to Enroll</Link>
-					     }
-					</Card.Body>
-				  </Card>
-				</Col>
-			</Row>
-		</Container>
-
-	)
+  return (
+    <div id="checkout">
+      <div className="mt-5">
+        <div className="my-3">
+          <h3 className="title">{name}</h3>
+          <h5 className="mb-3 text-muted">Description:</h5>
+          <p>{description}</p>
+          <h5 className="mt-3">Price:</h5>
+          <p className="mb-3 font-weight-bold">Php {price}</p>
+          <h5 className="mt-3">Quantity:</h5>
+          <div className="input-group mb-3">
+            <button
+              className="btn btn-outline-secondary"
+              type="button"
+              onClick={handleDecrement}
+            >
+              -
+            </button>
+            <input
+              type="number"
+              className="form-control text-center"
+              value={quantity}
+            />
+            <button
+              className="btn btn-outline-secondary"
+              type="button"
+              onClick={handleIncrement}
+            >
+              +
+            </button>
+          </div>
+          <h5 className="mt-3">Subtotal:</h5>
+          <p className="mb-3 font-weight-bold">Php {price * quantity}</p>
+          {user.id !== null ? (
+            <div className="text-center">
+              <button
+                className="btn btn-primary btn-block"
+                onClick={() => product(productId)}
+              >
+                Checkout
+              </button>
+            </div>
+          ) : (
+            <Link className="btn btn-danger btn-block" to="/login">
+              Buy now
+            </Link>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 }
