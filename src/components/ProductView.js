@@ -52,7 +52,7 @@ export default function ProductView() {
   useEffect(() => {
     console.log(productId);
 
-    fetch(`http://localhost:4000/products/${productId}`)
+    fetch(`${process.env.REACT_APP_API_URL}/products/${productId}`)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
