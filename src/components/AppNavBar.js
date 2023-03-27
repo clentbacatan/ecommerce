@@ -32,7 +32,7 @@ export default function AppNavbar(){
 
 
 						}
-						:
+						
 						
 						{ (user.id !== null) ?
 							<>
