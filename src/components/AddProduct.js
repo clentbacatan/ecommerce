@@ -14,7 +14,7 @@ export default function AddProduct() {
   function handleSubmit(e) {
     e.preventDefault();
 
-    fetch("http://localhost:4000/products/addProduct", {
+    fetch(`${process.env.REACT_APP_API_URL}/products/addProduct`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

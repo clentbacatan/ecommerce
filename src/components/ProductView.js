@@ -16,7 +16,7 @@ export default function ProductView() {
     const userId = user.id;
     const productName = name;
 
-    fetch(`http://localhost:4000/users/checkout`, {
+    fetch(`${process.env.REACT_APP_API_URL}/users/checkout`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

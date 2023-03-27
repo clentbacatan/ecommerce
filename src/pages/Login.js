@@ -23,7 +23,7 @@ export default function Login() {
         e.preventDefault();
 
  
-        fetch('http://localhost:4000/users/login',
+        fetch(`${process.env.REACT_APP_API_URL}/users/login`,
         {
         	method: 'POST',
         	headers: {

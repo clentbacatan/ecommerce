@@ -7,7 +7,7 @@ export default function UpdateProductCard({ product }) {
   const [isProductActive, setIsProductActive] = useState(isActive);
 
   const handleClick = () => {
-    fetch(`http://localhost:4000/products/${_id}/archive`, {
+    fetch(`${process.env.REACT_APP_API_URL}/products/${_id}/archive`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

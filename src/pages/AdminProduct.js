@@ -5,7 +5,7 @@ export default function Products() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:4000/products/all`, {
+    fetch(`${process.env.REACT_APP_API_URL}/products/all`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
