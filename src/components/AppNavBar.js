@@ -29,11 +29,8 @@ export default function AppNavbar(){
 						</>
 						:
 						<Nav.Link as={ NavLink } to="/products">Products</Nav.Link>
-
-
 						}
-						
-						
+												
 						{ (user.id !== null) ?
 							<>
 							<Nav.Link as={ NavLink } to="/logout">Logout</Nav.Link>							
