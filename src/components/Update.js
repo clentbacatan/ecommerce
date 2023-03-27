@@ -34,7 +34,7 @@ export default function UpdateProduct() {
 
         if (data.error) {
           Swal.fire({
-            title: "Add Product Failed",
+            title: "Updating Product Failed",
             icon: "error",
             text: "data.error"
           });
