@@ -7,142 +7,88 @@ import UserContext from '../UserContext';
 export default function Register(){
 
 	const { user } = useContext(UserContext);
+	
 	const navigate = useNavigate();
 
-	
-	const [firstName, setFirstName] = useState('');
-	const [lastName, setLastName] = useState('');
+
+	const [fullName, setfullName] = useState('');
 	const [email, setEmail] = useState('');
 	const [mobileNo, setMobileNo] = useState('');
 	const [password1, setPassword1] = useState('');
 	const [password2, setPassword2] = useState('');
 
-	const [isActive, setIsActive] = useState(false);
-
-	console.log(email);
-	console.log(password1);
-	console.log(password2);
+	const [isActive, setIsActive] = useState(true);
 
 
-	function registerUser(e) {
-		
+	async function registerUser(e) {
+
 		e.preventDefault();
 
-		fetch(`${process.env.REACT_APP_API_URL}/users/checkEmail`, {
-		    method: "POST",
-		    headers: {
-		        'Content-Type': 'application/json'
-		    },
-		    body: JSON.stringify({
-		        email: email
-		    })
-		})
-		.then(res => res.json())
-		.then(data => {
+		await fetch()
+		.then(response => response.json())
 
-		    console.log(data);
 
-		    if(data === true){
-
-		    	Swal.fire({
-		    		title: 'Duplicate email found',
-		    		icon: 'error',
-		    		text: 'Kindly provide another email to complete the registration.'	
-		    	});
-
-		    } else {
-
-	            fetch(`${process.env.REACT_APP_API_URL}/users/register`, {
-	                method: "POST",
-	                headers: {
-	                    'Content-Type': 'application/json'
-	                },
-	                body: JSON.stringify({
-	                    firstName: firstName,
-	                    lastName: lastName,
-	                    email: email,
-	                    mobileNo: mobileNo,
-	                    password: password1
-	                })
-	            })
-	            .then(res => res.json())
-	            .then(data => {
-
-	                console.log(data);
-
-	                if (data === true) {
-
-	                    // Clear input fields
-	                    setFirstName('');
-	                    setLastName('');
-	                    setEmail('');
-	                    setMobileNo('');
-	                    setPassword1('');
-	                    setPassword2('');
-
-	                    Swal.fire({
-	                        title: 'Registration successful',
-	                        icon: 'success',
-	                        text: 'Welcome to Shopinas!'
-	                    });
-
-	                  
-	                    navigate("/login");
-
-	                } else {
-
-	                    Swal.fire({
-	                        title: 'Something wrong',
-	                        icon: 'error',
-	                        text: 'Please try again.'   
-	                    });
-	                }
-
-				});
-	        }
-	    })
 	}
-	
+
+
+	function handleSubmit() {
+
+		navigate('/login');
+		Swal.fire({
+			title: "Successfully Registered",
+			icon: "success",
+		});
+		localStorage.setItem('password', btoa(password2));
+		localStorage.setItem('email', email);
+		
+
+
+	}
+
 
 	useEffect(() => {
 
-	    if((firstName !== '' && lastName !== '' && email !== '' && mobileNo.length === 11 && password1 !== '' && password2 !== '') && (password1 === password2)){
-	        setIsActive(true);
-	    } else {
-	        setIsActive(false);
+	    if((fullName !== '' &&  email !== '' && mobileNo.length === 11 && password1 !== '' && password2 !== '') && (password1 === password2)){
+			
+			setIsActive(true);
+	    
+		} else {
+	       
+			setIsActive(false);
 	    }
 
-	}, [firstName, lastName, email, mobileNo, password1, password2]);
+	}, [fullName, email, mobileNo, password1, password2]);
 
 	return(
 
-		(user.id !== null) ?
-		    <Navigate to="/courses" />
-		:
-		<Form onSubmit={(e) => registerUser(e)}>
-			<Form.Group controlId="firstName">
-			    <Form.Label>First Name</Form.Label>
+		<div className='mt-4'>
+		<div className='register-logo text-center'>
+			<div className='font-weight-bold'>SHOPINAS</div>
+		</div>
+		<div className='form-container'>
+		<Form onSubmit={(e) => registerUser(e)} className='form-head mt-5 p-4 shadow rounded' >
+			<Form.Group controlId="firstName" className='m-2'>
+			    <Form.Label>Full Name</Form.Label>
 			    <Form.Control 
 			        type="text" 
-			        placeholder="Enter first name"
-			        value={firstName} 
-			        onChange={e => setFirstName(e.target.value)}
-			        required
-			    />
+			        placeholder="Enter Full Name"
+			        value={fullName} 
+			        onChange={e => setfullName(e.target.value)}
+			        required/>
 			</Form.Group>
 
-			<Form.Group controlId="lastName">
-			    <Form.Label>Last Name</Form.Label>
-			    <Form.Control 
-			        type="text" 
-			        placeholder="Enter last name"
-			        value={lastName} 
-			        onChange={e => setLastName(e.target.value)}
-			        required
-			    />
-			</Form.Group>
+			<Form.Group controlId="mobileNo" className='m-2'>
+	          <Form.Label>Mobile Number</Form.Label>
+	          <Form.Control 
+	              type="text" 
+	              placeholder="Enter Mobile Number"
+	              value={mobileNo} 
+	              onChange={e => setMobileNo(e.target.value)}
+	              required
+	          />
+	      </Form.Group>
 
-	      <Form.Group className="mb-3" controlId="userEmail">
+	      <Form.Group className="m-2" controlId="userEmail">
 	        <Form.Label>Email address</Form.Label>
 	        <Form.Control 
 	        	type="email" 
@@ -155,28 +101,17 @@ export default function Register(){
 	        </Form.Text>
 	      </Form.Group>
 
-	      <Form.Group controlId="mobileNo">
-	          <Form.Label>Mobile Number</Form.Label>
-	          <Form.Control 
-	              type="text" 
-	              placeholder="Enter Mobile Number"
-	              value={mobileNo} 
-	              onChange={e => setMobileNo(e.target.value)}
-	              required
-	          />
-	      </Form.Group>
-
-	      <Form.Group className="mb-3" controlId="password1">
+	      <Form.Group className="m-2" controlId="password1">
 	        <Form.Label>Password</Form.Label>
 	        <Form.Control 
 	        	type="password" 
 	        	placeholder="Password"
 	        	value={ password1 }
 	        	onChange={e => setPassword1(e.target.value)} 
-	        	required/>
+				required/>
 	      </Form.Group>
 	      
-	      <Form.Group className="mb-3" controlId="password2">
+	      <Form.Group className="m-2" controlId="password2">
 	        <Form.Label>Verify Password</Form.Label>
 	        <Form.Control 
 	        	type="password" 
@@ -186,16 +121,26 @@ export default function Register(){
 	        	required/>
 	      </Form.Group>
 
-	      { isActive ?
-	  			<Button variant="primary" type="submit" id="submitBtn">
-	  			  Submit
-	  			</Button>
-	  			:
-	  			<Button variant="danger" type="submit" id="submitBtn" disabled>
-	  			  Submit
-	  			</Button>
+	      	{ isActive ? 
+				<Button variant="primary"
+					type="submit" 
+					id="submitBtn" 
+					className='m-2' 
+					onClick={handleSubmit}>
+					Submit
+				</Button>
+				:	
+				<Button variant="danger"
+					type="submit" 
+					id="submitBtn" 
+					className='m-2' 
+					disabled>
+					Submit
+				</Button>
 	  		}
 	    </Form>
-
+		</div>
+		</div>
+		
 	)
 }

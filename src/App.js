@@ -61,21 +61,21 @@ function App() {
 
    
     <UserProvider value={{ user, setUser, unsetUser }}>
-      <Router>      
-        <Container fluid>   
-          <AppNavbar />     
+      <Router>
+        <Container fluid> 
+          <AppNavbar />
             <Routes>
-              <Route path="/" element={<Home />} />
+            <Route path="/register" element={<Register />} />  
+              {/* <Route path="/" element={<Home />} />
               <Route path="/products" element={<Products />} />
               <Route path="/products/:productId" element={<ProductView />} />
-              <Route path="/admindashboard" element={<AdminDashboard />}/>        
+              <Route path="/admindashboard" element={<AdminDashboard />}/>         */}
               <Route path="/login" element={<Login />} />
               <Route path="/logout" element={<Logout />}/>
-              <Route path="/addproduct" element={<AddProduct />}/>
+              {/* <Route path="/addproduct" element={<AddProduct />}/>
               <Route path="/products/all" element={<AdminProduct/>}/>
-              <Route path="/product/:productId" element={<Update/>}/>
-              <Route path="/register" element={<Register />} />
-              <Route path="*" element={<Error />} />
+              <Route path="/product/:productId" element={<Update/>}/> */}
+              {/* <Route path="*" element={<Error />} /> */}
             </Routes>
         </Container>
       </Router>

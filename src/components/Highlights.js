@@ -7,7 +7,7 @@ export default function Highlights() {
 				<Card className="cardHighlight p-3">
 			      <Card.Body>
 			        <Card.Title>
-			        	<h2>Product 1</h2>
+			        	<h2>Mirage</h2>
 			        </Card.Title>
 			        <Card.Text>
 			          Sample Product 1
@@ -19,7 +19,7 @@ export default function Highlights() {
 				<Card className="cardHighlight p-3">
 			      <Card.Body>
 			        <Card.Title>
-			        	<h2>Product 2</h2>
+			        	<h2>Optimus</h2>
 			        </Card.Title>
 			        <Card.Text>
 			         Sample Product 2
@@ -31,7 +31,7 @@ export default function Highlights() {
 				<Card className="cardHighlight p-3">
 			      <Card.Body>
 			        <Card.Title>
-			        	<h2>Product 2</h2>
+			        	<h2>Bumble Bee</h2>
 			        </Card.Title>
 			        <Card.Text>
 			          Sample Product 2

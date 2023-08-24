@@ -83,42 +83,29 @@ export default function ProductView() {
           <h5 className="mt-3">Price:</h5>
           <p className="mb-3 font-weight-bold">Php {price}</p>
           <h5 className="mt-3">Quantity:</h5>
-          <div className="input-group mb-3">
-            <button
-              className="btn btn-outline-secondary"
-              type="button"
-              onClick={handleDecrement}
-            >
-              -
-            </button>
+        <div className="input-group mb-3">
+            <button className="btn btn-outline-secondary" type="button" onClick={handleDecrement}>-</button>
             <input
               type="number"
               className="form-control text-center"
-              value={quantity}
-            />
-            <button
-              className="btn btn-outline-secondary"
-              type="button"
-              onClick={handleIncrement}
-            >
-              +
-            </button>
+              value={quantity}/>
+            <button className="btn btn-outline-secondary" type="button" onClick={handleIncrement}>+</button>
+        </div>
+          <div>
+            <h5 className="mt-3">Subtotal:</h5>
+            <p className="mb-3 font-weight-bold">Php {price * quantity}</p>
           </div>
-          <h5 className="mt-3">Subtotal:</h5>
-          <p className="mb-3 font-weight-bold">Php {price * quantity}</p>
+         
           {user.id !== null ? (
+            
             <div className="text-center">
-              <button
-                className="btn btn-primary btn-block"
-                onClick={() => product(productId)}
-              >
-                Checkout
-              </button>
+              <button className="btn btn-primary btn-block" onClick={() => product(productId)}>Checkout</button>
             </div>
+          
           ) : (
-            <Link className="btn btn-danger btn-block" to="/login">
-              Buy now
-            </Link>
+            
+            <Link className="btn btn-danger btn-block" to="/login">Buy now</Link>
+          
           )}
         </div>
       </div>

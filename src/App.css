@@ -3,3 +3,33 @@
 	padding: 0;
 	box-sizing: border-box;
 }
+
+/* Register Form */
+
+.form-container {
+	display: flex;
+	justify-content: center;
+
+	
+}
+
+
+
+.form-head {
+	width: 500px;
+}
+
+/* End of Register Form */
+
+/* LogIn Form */
+
+.login-container {
+	display: flex;
+	justify-content: center;
+	
+}
+
+.login-form {
+	width: 400px;
+	margin-top: 150px;
+}

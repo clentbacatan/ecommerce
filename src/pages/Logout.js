@@ -6,18 +6,15 @@ export default function Logout() {
 
 	
 	const { unsetUser, setUser } = useContext(UserContext);
-
+		
+			unsetUser();
 	
-	unsetUser();
-
-	
-
-	useEffect(() => {
+		useEffect(() => {
 
 		setUser({id: null})
+	
 	});
 
-	
 	return(
 		<Navigate to='/login'/>
 	)

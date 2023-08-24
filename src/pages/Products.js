@@ -4,7 +4,7 @@ import ProductCard from '../components/ProductCard';
 
 export default function Product(){
 
-	const [ product, setProduct ] = useState([]);
+	const [ products, setProduct ] = useState([]);
 
 	useEffect(() => {
 
@@ -14,18 +14,18 @@ export default function Product(){
 
 			console.log(data);
 			
-			setProduct(data.map(product => {
+			setProduct(data.map(products => {
 
 				return (
-					<ProductCard key={ product._id } product={ product } />
+					<ProductCard key={ products._id } product={ products } />
 				);
 			}));
 		})
 	}, []);
 	
 	return (
-		<>
-			{ product }
-		</>
+		<div>
+			{ products }
+		</div>
 	)
 }

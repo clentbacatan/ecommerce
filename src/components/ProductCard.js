@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 
 export default function ProductCard({ product }) {
 
-  
+    console.log(product)
+    
     const { _id, name, description, price } = product;
-
 
     return (
         <Card className="my-3">

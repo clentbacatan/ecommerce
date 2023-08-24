@@ -1,10 +1,11 @@
 import Banner from '../components/Banner';
-
 import Highlights from '../components/Highlights';
+
 
 export default function Home() {
 
 	const data = {
+
 	    title: "SHOPINAS",
 	    content: "ONLINE RETAIL STORE",
 	    destination: "/products",
@@ -12,10 +13,9 @@ export default function Home() {
 	}
 
 	return (
-		<>
+		<div>
 			<Banner data={ data } />
 			<Highlights />
-			{/*<CourseCard />*/}
-		</>
+		</div>
 	)
 }

@@ -20,7 +20,7 @@ export default function UpdateProduct() {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
+         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       body: JSON.stringify({
         name,
@@ -42,7 +42,7 @@ export default function UpdateProduct() {
           Swal.fire({
             title: "Succesfully updated",
             icon: "success",
-            text: "Product has been added.",
+            text: "Product has been updated.",
           });
         }
       });

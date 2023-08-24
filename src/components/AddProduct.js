@@ -12,6 +12,7 @@ export default function AddProduct() {
   const [isActive, setIsActive] = useState(false);
 
   function handleSubmit(e) {
+    
     e.preventDefault();
 
     fetch(`${process.env.REACT_APP_API_URL}/products/addProduct`, {
@@ -114,18 +115,18 @@ export default function AddProduct() {
           </Form.Group>
 
           {validateForm() ? (
-            <Button variant="success" type="submit" id="submitBtn">
-              Add Product
-            </Button>
+            
+            <Button variant="success" type="submit" id="submitBtn">Add Product</Button>
+          
           ) : (
-            <Button variant="danger" type="submit" id="submitBtn" disabled>
-              Add Product
-            </Button>
+            
+            <Button variant="danger" type="submit" id="submitBtn" disabled>Add Product</Button>
           )}
+        
         </Form>
-      ) : (
-        <h3>Access Denied. Only admins can add products.</h3>
-      )}
+      
+      ) : ( <h3>Access Denied. Only admins can add products.</h3> )}
+    
     </Container>
   );
 }
