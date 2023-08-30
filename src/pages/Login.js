@@ -14,89 +14,81 @@ export default function Login() {
     const [password, setPassword] = useState(''); 
     const [isActive, setIsActive] = useState();
 
-	// function authenticate(e) {
-    //     	e.preventDefault();
-    //     fetch(`${process.env.REACT_APP_API_URL}/users/login`,
-    //     {
-    //     	method: 'POST',
-    //     	headers: {
-    //     		'Content-Type': 'application/json'
-    //     	},
-    //     	body: JSON.stringify({
-    //     		email: email,
-    //     		password: password
-    //     	})
-    //     })
-    //     .then(res => res.json())
-    //     .then(data => {    
-        	
-	// 		console.log(data);
-	
-    //     	if(typeof data.access !== "undefined") {
 
-    //     		localStorage.setItem('token', data.access);
-    //     		retrieveUserDetails(data.access);
+	const logInUser = (e) => {
 
-    //     		Swal.fire({
-    //     			title: "Login Successful",
-    //     			icon: "success",
-    //     			text: "Welcome to Zuitt!"
-    //     		});
-        		
-	// 		} else {
+		e.preventDefault();
 
-    //     		Swal.fire({
-    //     			title: "Authentication Failed",
-    //     			icon: "error",
-    //     			text: "Check your login credentials and try again."
-    //     		});
-    //     	}
-    //     });
-    //     setEmail('');
-    //     setPassword('');    
-    // }
+		fetch('http://localhost:4000/users/checkEmail', {
 
-    // const retrieveUserDetails = (token) => {
+			method: 'POST',
+			headers: {
+				'Content-type': 'application/json'
+			},
+			body: JSON.stringify({
+				
+				email: email
+			
+			})
+		})
+		.then(res => res.json())
+		.then(data => {
 
-    // 	fetch(`${process.env.REACT_APP_API_URL}/users/details`, {
-    // 		headers: {
-    // 			Authorization: `Bearer ${ token }`
-    // 		}
-    // 	})
-    // 	.then(res => res.json())
-    // 	.then(data => {
-    		
-	// 		console.log(data);	
-    		
-	// 		setUser({
-    // 			id: data._id,
-    // 			isAdmin: data.isAdmin
-    // 		})
-    // 	})
-    // };
+			if(data === false) {
+				Swal.fire({
+					title: "No email found",
+					icon: "error",
+    				text: "Check your login credentials and try again."
+				})
+			
+			} else {
 
-
-        
-
-        // access the localstorage
+				fetch('http://localhost:4000/users/login', {
+					method: 'POST',
+					headers: {
+						'Content-type': 'application/json'
+					},
+					body: JSON.stringify({
+						email: email,
+						password: password
+					})
+				})
+				.then(res => res.json())
+				.then(data => {
+					console.log(data)
+					if(data) {
+						Swal.fire({
+							title: "Successfully Login",
+							icon: "success",
+							text: "Check your login credentials."
+						})
+					} else {
+						Swal.fire({
+							title: "Error",
+							icon: "error",
+							text: "Check your login credentials and try again."
+						})
+					}
+				})
+			}
+		})
+	}
 	
 
-	useEffect(() => {
-        const email1 = localStorage.getItem('email');
-        const password1 = localStorage.getItem('password');
-        let savedPass = atob(password1);
+	useEffect(() =>{
+		
+		if(email !== '' && password !== '') {
 
-        if(email === email1 && password === savedPass ){
-            setIsActive(true);
-        } else {
-            setIsActive(false);
-        }
+			setIsActive(true);
+		} else {
 
-    }, [email, password]);
+			setIsActive(false)
+		}
+	},[email, password])
 
     return (
 			<div className='login-container'>
-				<Form className='login-form shadow rounded'>
+				<Form onSubmit={(e) => logInUser(e)} className='login-form shadow rounded'>
 		        <Form.Group className="p-2" controlId="userEmail">
 		            <Form.Label>Email address</Form.Label>
 		            	<Form.Control 

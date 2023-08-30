@@ -19,7 +19,9 @@ import Register from './pages/Register';
 import AdminDashboard from './components/AdminDashboard';
 import AddProduct from './components/AddProduct';
 import AdminProduct from './pages/AdminProduct'
-import Update from './components/Update'
+import Update from './components/Update';
+import Navbar from './components/UsersComponents/Navbar';
+import UsersHomePage from './pages/HomePage/UsersHomePage';
 
 
 import { UserProvider } from './UserContext'
@@ -63,9 +65,10 @@ function App() {
     <UserProvider value={{ user, setUser, unsetUser }}>
       <Router>
         <Container fluid> 
-          <AppNavbar />
+          {/* <AppNavbar /> */}
+          <UsersHomePage />
             <Routes>
-            <Route path="/register" element={<Register />} />  
+            {/* <Route path="/register" element={<Register />} />   */}
               {/* <Route path="/" element={<Home />} />
               <Route path="/products" element={<Products />} />
               <Route path="/products/:productId" element={<ProductView />} />

@@ -14,41 +14,88 @@ export default function Register(){
 	const [fullName, setfullName] = useState('');
 	const [email, setEmail] = useState('');
 	const [mobileNo, setMobileNo] = useState('');
-	const [password1, setPassword1] = useState('');
-	const [password2, setPassword2] = useState('');
+	const [password, setPassword] = useState('');
+
 
 	const [isActive, setIsActive] = useState(true);
 
 
-	async function registerUser(e) {
+	const registerUser = (e) => {
 
 		e.preventDefault();
 
-		await fetch()
-		.then(response => response.json())
+		fetch('http://localhost:4000/users/checkEmail', {
 
+			method: 'POST',
+			headers: {
+				'Content-type': 'application/json'
+			},
+			body: JSON.stringify({
 
-	}
-
-
-	function handleSubmit() {
-
-		navigate('/login');
-		Swal.fire({
-			title: "Successfully Registered",
-			icon: "success",
-		});
-		localStorage.setItem('password', btoa(password2));
-		localStorage.setItem('email', email);
+				email:email
+			})
 		
+		})
+		.then(res => res.json())
+		.then(data => {
 
+			if(data === true) {
+				Swal.fire({
+					title: "Duplicate email found",
+					icon: "error",
+    				text: "Check your login credentials and try again."
+					
+				})
+			} else {
+				
+				fetch('http://localhost:4000/users/register', {
+					
+					method: 'POST',
+					headers: {
+						'Content-type': 'application/json'
+					},
+					body: JSON.stringify({
 
+						fullName: fullName,
+						email: email,
+						password: password
+					})
+
+				})
+				.then(res => res.json())
+				.then(data => {
+					if(data === true) {
+						
+						setfullName('');
+						setEmail('');
+						setPassword();
+					
+					Swal.fire({
+						title: "Successfully Registered",
+						icon: "success",
+						text: "Thank you for registering"
+					})
+
+						navigate('/login');
+
+					} else {
+
+						Swal.fire({
+							title: "Error occur",
+							icon: "error",
+							text: "Please try again"
+						})
+
+					}
+				})
+			}
+		})
+	
 	}
-
 
 	useEffect(() => {
 
-	    if((fullName !== '' &&  email !== '' && mobileNo.length === 11 && password1 !== '' && password2 !== '') && (password1 === password2)){
+	    if((fullName !== '' &&  email !== ''  && password !== '')){
 			
 			setIsActive(true);
 	    
@@ -57,7 +104,7 @@ export default function Register(){
 			setIsActive(false);
 	    }
 
-	}, [fullName, email, mobileNo, password1, password2]);
+	}, [fullName, email, password]);
 
 	return(
 
@@ -77,7 +124,7 @@ export default function Register(){
 			        required/>
 			</Form.Group>
 
-			<Form.Group controlId="mobileNo" className='m-2'>
+			{/* <Form.Group controlId="mobileNo" className='m-2'>
 	          <Form.Label>Mobile Number</Form.Label>
 	          <Form.Control 
 	              type="text" 
@@ -86,7 +133,7 @@ export default function Register(){
 	              onChange={e => setMobileNo(e.target.value)}
 	              required
 	          />
-	      </Form.Group>
+	      </Form.Group> */}
 
 	      <Form.Group className="m-2" controlId="userEmail">
 	        <Form.Label>Email address</Form.Label>
@@ -106,12 +153,12 @@ export default function Register(){
 	        <Form.Control 
 	        	type="password" 
 	        	placeholder="Password"
-	        	value={ password1 }
-	        	onChange={e => setPassword1(e.target.value)} 
+	        	value={ password }
+	        	onChange={e => setPassword(e.target.value)} 
 				required/>
 	      </Form.Group>
 	      
-	      <Form.Group className="m-2" controlId="password2">
+	      {/* <Form.Group className="m-2" controlId="password2">
 	        <Form.Label>Verify Password</Form.Label>
 	        <Form.Control 
 	        	type="password" 
@@ -119,14 +166,15 @@ export default function Register(){
 	        	value={ password2 }
 	        	onChange={e => setPassword2(e.target.value)}  
 	        	required/>
-	      </Form.Group>
+	      </Form.Group> */}
 
 	      	{ isActive ? 
 				<Button variant="primary"
 					type="submit" 
 					id="submitBtn" 
 					className='m-2' 
-					onClick={handleSubmit}>
+					
+					>
 					Submit
 				</Button>
 				:	
